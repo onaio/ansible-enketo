@@ -1,0 +1,23 @@
+---
+- name: Make Redis Cache Data Directory
+  file:
+    state: directory
+    path: "{{ enketo_redis_cache_dir }}"
+    owner: "{{ enketo_redis_user }}"
+
+- name: Copy Redis Cache configuration
+  template:
+    src: templates/etc/redis/redis-cache.conf.j2
+    dest: /etc/redis/redis-cache.conf
+    mode: "0644"
+    owner: "{{ enketo_redis_user }}"
+
+- name: Copy Redis Server Cache Run script
+  template:
+    src: templates/etc/init.d/redis-server-cache.j2
+    dest: /etc/init.d/redis-server-cache
+    mode: "0755"
+    owner: "{{ enketo_redis_user }}"
+
+- name: Start Redis Server Cache
+  shell: /etc/init.d/redis-server-cache start

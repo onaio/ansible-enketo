@@ -1,0 +1,13 @@
+---
+- name: Install Enketo Dependencies
+  apt:
+    pkg: "{{ item }}"
+    state: latest
+    update_cache: yes
+    cache_valid_time: 600
+  with_items:
+    - build-essential
+    - git
+    - libxml2-dev
+    - libxslt1-dev
+    - nginx

@@ -1,0 +1,23 @@
+---
+- name: Install Node Version Manager
+  include_role:
+    name: nvm
+  become: true
+  become_user: "{{ enketo_user }}"
+  vars:
+    nvm_user: "{{ enketo_user }}"
+    nvm_group: "{{ enketo_group }}"
+    nvm_node_version: "{{ enketo_node_version }}"
+    nvm_install_path: "{{ enketo_nvm_root }}"
+    nvm_node_dir: "{{ enketo_node_dir }}"
+    nvm_npm_path: "{{ enketo_npm_path }}"
+
+- name: Install npm global packages
+  shell: "{{ enketo_npm_path }} install -g {{ item }}"
+  with_items:
+    - grunt-cli
+    - bower
+    - mocha
+    - pm2
+  environment:
+    PATH: "{{ enketo_node_dir }}/bin:{{ ansible_env.PATH }}"

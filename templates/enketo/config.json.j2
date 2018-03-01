@@ -1,0 +1,79 @@
+{
+    "app name": "{{ enketo_app_name }}",
+    "port": "{{ enketo_app_port }}",
+    "offline enabled": {{ enketo_enable_offline }},
+    "linked form and data server": {
+        "name": "{{ enketo_linked_server_name }}",
+        "server url": "{{ enketo_linked_server_url }}",
+        "api key": "{{ enketo_api_token }}",
+        "legacy formhub": false,
+        "authentication": {
+            "managed by enketo": {{ enketo_managed_by_enketo }},
+            "allow insecure transport": {{ enketo_allow_insecure_transport }},
+            "external login url that sets cookie": "{{ enketo_ona_authentication_url }}?return={RETURNURL}"
+        }
+    },
+    "timeout": {{ enketo_timeout }},
+    "encryption key": "{{ enketo_api_salt }}",
+    "default theme": "{{ enketo_supported_themes | first }}",
+    "themes supported":[{% for theme in enketo_supported_themes %}"{{ theme }}"{% if loop.index != loop.length %}, {% endif %}{% endfor %}],
+    "base path": "",
+    "log": {
+        "submissions": false
+    },
+    "support": {
+        "email": "{{ enketo_support_email }}"
+    },
+    "widgets": [
+        "note", "select-desktop", "select-mobile", "autocomplete", "geo", "textarea",
+        "table", "radio", "date", "time", "datetime", "compact", "file", "draw",
+        "likert", "distress", "horizontal", "image-view", "comment", "image-map", "date-mobile"
+    ],
+    "analytics": "google",
+    "google": {
+        "analytics": {
+            "ua": "{{ enketo_google_analytics_ua }}",
+            "domain": "{{ enketo_google_analytics_domain }}"
+        },
+        "api key": "{{ enketo_google_api_key }}"
+    },
+    "piwik": {
+        "analytics": {
+            "tracker url": "{{ enketo_piwik_anaytics_tracker_url }}",
+            "site id": "{{ enketo_piwik_anaytics_site_id }}"
+        }
+    },
+    "maps": [{% for v in enketo_maps %}{
+            "name": "{{ v.name }}",
+            "tiles": [
+{% for tile in v.tiles %}
+                "{{ tile }}"
+{% if loop.index != loop.length %},{% endif %}
+{% endfor %}
+            ],
+            "attribution": "{{ v.attribution }}"
+        }{% if loop.index != loop.length %},{% endif %}{% endfor %}
+
+    ],
+    "query parameter to pass to submission": "",
+    "redis": {
+        "main": {
+            "host": "{{ enketo_redis_main_host }}",
+            "port": "{{ enketo_redis_main_port }}",
+            "password": {{ enketo_redis_main_password }}
+        },
+        "cache": {
+            "host": "{{ enketo_redis_cache_host }}",
+            "port": "{{ enketo_redis_cache_port }}",
+            "password": {{ enketo_redis_cache_password }}
+        }
+    },
+    "logo": {
+        "source": "{{ enketo_logo_source }}",
+        "href": "{{ enketo_logo_href }}"
+    },
+    "disable save as draft": {{ enketo_disable_save_drafts }},
+    "repeat ordinals": {{ enketo_repeat_ordinals }},
+    "validate continuously": {{ enketo_validate_continuously }},
+    "validate page": {{ enketo_validate_page }}
+}

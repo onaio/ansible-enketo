@@ -1,0 +1,100 @@
+---
+- name: Make Checkout Path for Enketo Repo
+  file:
+    state: directory
+    path: "{{ enketo_checkout_path }}"
+    owner: "{{ enketo_user }}"
+    group: "{{ enketo_group }}"
+    recurse: yes
+
+- name: Clone Enketo GIT Repository
+  become: true
+  become_user: "{{ enketo_user }}"
+  git:
+    repo: "{{ enketo_git_url }}"
+    dest: "{{ enketo_checkout_path }}"
+    version: "{{ enketo_git_branch }}"
+    recursive: yes
+    update: yes
+
+- name: Install npm Dependencies in package.json
+  become: true
+  become_user: "{{ enketo_user }}"
+  npm:
+    executable: "{{ enketo_npm_path }}"
+    path: "{{ enketo_checkout_path }}"
+  ignore_errors: yes
+  environment:
+    PATH: "{{ enketo_node_dir }}/bin:{{ ansible_env.PATH }}"
+
+- name: Copy enketo config to config directory
+  template:
+    src: templates/enketo/config.json.j2
+    dest: "{{ enketo_checkout_path }}/config/config.json"
+    owner: "{{ enketo_user }}"
+    group: "{{ enketo_group }}"
+    mode: "0644"
+
+- name: Patch express.js file for additional settings
+  patch:
+    src: templates/enketo/express.js.diff
+    basedir: "{{ enketo_checkout_path }}"
+    strip: 1
+
+- name: Grunt Compile CSS and JS
+  become: true
+  become_user: "{{ enketo_user }}"
+  shell: "{{ enketo_grunt_path }}"
+  args:
+    chdir: "{{ enketo_checkout_path }}"
+  environment:
+    PATH: "{{ enketo_node_dir }}/bin:{{ ansible_env.PATH }}"
+    HOME: "{{ enketo_home }}"
+
+# Re-run grunt to make sure the Enketo Grid Theme work as expected
+- name: Re run Grunt Compile CSS and JS
+  become: true
+  become_user: "{{ enketo_user }}"
+  shell: "{{ enketo_grunt_path }}"
+  args:
+    chdir: "{{ enketo_checkout_path }}"
+  environment:
+    PATH: "{{ enketo_node_dir }}/bin:{{ ansible_env.PATH }}"
+    HOME: "{{ enketo_home }}"
+
+- name: Make the new codebase current
+  file:
+    force: yes
+    state: link
+    dest: "{{ enketo_codebase_path }}"
+    src: "{{ enketo_checkout_path }}"
+  notify:
+    - reload nginx
+
+- name: delete specific enketo pm2 process
+  become: true
+  become_user: "{{ enketo_user }}"
+  command: "{{ enketo_pm2_path }} delete {{ enketo_user }}"
+  # this command fails if the process has not yet been started
+  ignore_errors: yes
+  environment:
+    PATH: "{{ enketo_node_dir }}/bin:{{ ansible_env.PATH }}"
+    HOME: "{{ enketo_home }}"
+  tags:
+    - run-app
+  notify:
+    - reload nginx
+
+- name: start enketo pm2 service
+  become: true
+  become_user: "{{ enketo_user }}"
+  command: "{{ enketo_pm2_path }} start app.js -i 0 -n {{ enketo_user }}"
+  args:
+    chdir: "{{ enketo_codebase_path }}"
+  environment:
+    PATH: "{{ enketo_node_dir }}/bin:{{ ansible_env.PATH }}"
+    HOME: "{{ enketo_home }}"
+  tags:
+    - run-app
+  notify:
+    - reload nginx

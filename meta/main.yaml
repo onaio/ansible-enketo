@@ -1,0 +1,55 @@
+---
+galaxy_info:
+  author: Ona Engineering
+  description: This role is used to install and configure Enketo
+  min_ansible_version: 2.4
+  license: Apache 2
+  platforms:
+    - name: Ubuntu
+      verions:
+      - xenial
+      - trusty
+  categories:
+    - enketo
+
+dependencies:
+ - role: DavidWittman.redis
+   become: true
+   become_user: "root"
+   redis_bind: "{{ enketo_redis_bind_address }}"
+
+ - role: nginx
+   become: true
+   become_user: "root"
+   nginx_sites: "{{ enketo_nginx_sites }}"
+   nginx_install_method: "package"
+   nginx_enabled_sites:
+    - "{{ enketo_nginx_http_site_name }}"
+    - "{{ enketo_nginx_https_site_name }}"
+   nginx_default_enable: false
+   tags: ["nginx"]
+
+ - role: collectd
+   become: true
+   become_user: "root"
+   collectd_scripts: ["nginx"]
+   collectd_deployed_app_name: "enketo"
+   collectd_deployed_app_version: "{{ enketo_git_branch }}"
+   tags:
+    - collectd
+
+ - role: monit
+   become: true
+   become_user: "root"
+   service_name: "{{ enketo_user }}"
+   nginx_server_name: "{{ enketo_nginx_site_name }}"
+   monit_scripts: ["monit", "enketo"]
+   monit_enketo_codebase_path: "{{ enketo_codebase_path }}"
+   monit_enketo_home: "{{ enketo_home }}"
+   monit_enketo_user: "{{ enketo_user }}"
+   monit_enketo_group: "{{ enketo_group }}"
+
+ - role: mrlesmithjr.logstash
+   become: true
+   become_user: "root"
+   openjdk_version: "{{ enketo_openjdk_version }}"
