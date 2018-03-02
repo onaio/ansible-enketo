@@ -17,6 +17,8 @@ dependencies:
    become: true
    become_user: "root"
    redis_bind: "{{ enketo_redis_bind_address }}"
+   tags:
+    - redis
 
  - role: nginx
    become: true
@@ -27,7 +29,8 @@ dependencies:
     - "{{ enketo_nginx_http_site_name }}"
     - "{{ enketo_nginx_https_site_name }}"
    nginx_default_enable: false
-   tags: ["nginx"]
+   tags:
+    - nginx
 
  - role: collectd
    become: true
@@ -48,8 +51,21 @@ dependencies:
    monit_enketo_home: "{{ enketo_home }}"
    monit_enketo_user: "{{ enketo_user }}"
    monit_enketo_group: "{{ enketo_group }}"
+   tags:
+    - monit
 
  - role: mrlesmithjr.logstash
    become: true
    become_user: "root"
    openjdk_version: "{{ enketo_openjdk_version }}"
+   tags:
+    - logstash
+
+ - role: lafranceinsoumise.backup
+   become: true
+   become_user: "root"
+   backup_enabled: "{{ enketo_redis_backup_enabled }}"
+   backup_duplicity_version: "{{ enketo_duplicity_version }}"
+   backup_profiles: "{{ enketo_backup_profiles }}"
+   tags:
+    - backup

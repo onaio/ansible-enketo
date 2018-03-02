@@ -98,3 +98,15 @@ enketo_nginx_sites:
           proxy_read_timeout: "{{ enketo_nginx_proxy_read_timeout }}"
           proxy_redirect: "off"
           proxy_next_upstream: "error timeout invalid_header http_500 http_502 http_503 http_504"
+enketo_redis_backup_enabled: true
+enketo_duplicity_version: "0.7.06-2ubuntu2"
+enketo_redis_backup_target: "/backups/enketo/redis"
+enketo_redis_backup_schedule: "0 0 * * 0"
+enketo_redis_backup_max_age: "7D"
+enketo_backup_profiles:
+    - name: redis
+      schedule: "{{ enketo_redis_backup_schedule }}"
+      max_age: "{{ enketo_redis_backup_max_age }}"
+      source: "/var/lib/redis"
+      target: "{{ enketo_redis_backup_target }}"
+enketo_backup_gpg_key: disabled
