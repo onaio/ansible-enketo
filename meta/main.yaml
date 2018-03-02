@@ -61,11 +61,14 @@ dependencies:
    tags:
     - logstash
 
- - role: lafranceinsoumise.backup
+ - role: Stouts.backup
    become: true
    become_user: "root"
    backup_enabled: "{{ enketo_redis_backup_enabled }}"
-   backup_duplicity_version: "{{ enketo_duplicity_version }}"
    backup_profiles: "{{ enketo_backup_profiles }}"
+   backup_max_age: "{{ enketo_backup_max_age }}"
+   backup_full_max_age: "{{ enketo_backup_full_max_age }}"
+   backup_target_user: "{{ enketo_backup_target_user }}"
+   backup_target_pass: "{{ enketo_backup_target_pass }}"
    tags:
     - backup
