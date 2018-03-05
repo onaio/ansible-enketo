@@ -1,6 +1,6 @@
 ---
 - name: Install Ubuntu related packages
-  include_tasks: ubuntu.yaml
+  include_tasks: ubuntu.yml
   when: ansible_distribution == 'Ubuntu'
 
 - name: Add Enketo System User
@@ -14,14 +14,14 @@
     home: "{{ enketo_home }}"
 
 - name: Install NVM and Global Node Packages
-  include_tasks: install-nvm.yaml
+  include_tasks: install-nvm.yml
   tags:
    - nvm
 
 - name: Configure Redis for Enketo
-  include_tasks: configure-redis.yaml
+  include_tasks: configure-redis.yml
   tags:
    - redis
 
 - name: Install and configure Enketo
-  include_tasks: install-enketo.yaml
+  include_tasks: install-enketo.yml

@@ -18,7 +18,7 @@ Role Dependencies
 Role Variables
 --------------
 
-Check [./defaults/main.yaml](./defaults/main.yaml) for default values for Ansible variables. Please ensure you provide values as strings (not booleans) for the following boolean variables:
+Check [./defaults/main.yml](./defaults/main.yml) for default values for Ansible variables. Please ensure you provide values as strings (not booleans) for the following boolean variables:
 - enketo_validate_page
 - enketo_enable_offline
 - enketo_managed_by_enketo
