@@ -25,3 +25,8 @@
 
 - name: Install and configure Enketo
   include_tasks: install-enketo.yml
+
+- name: Install Monit
+  include_tasks: install-monit.yml
+  tags:
+   - monit

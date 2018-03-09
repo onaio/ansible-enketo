@@ -1,0 +1,15 @@
+---
+- name: Install Monit
+  include_role:
+    name: monit
+  become: true
+  become_user: "root"
+  vars:
+    service_name: "{{ enketo_user }}"
+    nginx_server_name: "{{ enketo_nginx_site_name }}"
+    monit_scripts: ["monit", "enketo"]
+    monit_enketo_codebase_path: "{{ enketo_codebase_path }}"
+    monit_enketo_home: "{{ enketo_home }}"
+    monit_enketo_user: "{{ enketo_user }}"
+    monit_enketo_group: "{{ enketo_group }}"
+
