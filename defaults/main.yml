@@ -69,14 +69,14 @@ enketo_ssl_key: "star.ona.io.key"
 enketo_nginx_sites:
     - server:
         name: "{{ enketo_nginx_http_site_name }}"
-        listen: 80
+        __listen: "80;\n  listen [::]:80;\n"
         server_name: "{{ enketo_nginx_site_name }}"
         return: "301 https://$server_name$request_uri"
         ssl:
           enabled: false
     - server:
         name: "{{ enketo_nginx_https_site_name }}"
-        listen: 443
+        __listen: "443;\n  listen [::]:443;\n"
         server_name: "{{ enketo_nginx_site_name }}"
         client_max_body_size: "{{ enketo_nginx_client_max_body_size }}"
         ssl:
