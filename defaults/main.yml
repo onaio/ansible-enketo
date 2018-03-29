@@ -111,3 +111,37 @@ enketo_backup_profiles:
 enketo_backup_gpg_key: disabled
 enketo_backup_target_user: ""
 enketo_backup_target_pass: ""
+enketo_nginx_log_dir: "/var/log/nginx"
+
+enketo_graylog_server: "127.0.0.1"
+enketo_graylog_port: "12204"
+
+enketo_logstash_plugins:
+  - logstash-filter-elasticsearch
+  - logstash-filter-json_encode
+  - logstash-filter-translate
+  - logstash-input-file
+  - logstash-input-beats
+  - logstash-output-email
+  - logstash-output-gelf
+enketo_logstash_custom_outputs:
+  - output: 'gelf'
+    lines:
+      - 'host => "{{ enketo_graylog_server }}"'
+      - 'port => "{{ enketo_graylog_port }}"'
+      - 'sender => "{{ enketo_nginx_site_name }}"'
+enketo_logstash_custom_inputs:
+  - input: 'file'
+    lines:
+      - 'path => ["{{ enketo_nginx_log_dir }}/{{ enketo_nginx_https_site_name }}-ssl-access.log"]'
+      - 'start_position => "beginning"'
+      - 'add_field => {'
+      - '  ssl => true'
+      - '  nginx_access => true'
+      - '  from_nginx => true'
+      - '  from_ona => true'
+      - '  from_host => "%{host}"'
+      - '  from_domain => "{{ enketo_nginx_site_name }}"'
+      - '  from_{{ enketo_user }} => true'
+      - '  git_version => "{{ enketo_git_branch }}"'
+      - '}'
