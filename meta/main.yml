@@ -42,18 +42,6 @@ dependencies:
    tags:
     - collectd
 
- - role: mrlesmithjr.logstash
-   become: true
-   become_user: "root"
-   openjdk_version: "{{ enketo_openjdk_version }}"
-   clear_logstash_config: true
-   logstash_plugins: "{{ enketo_logstash_plugins }}"
-   logstash_custom_outputs: "{{ enketo_logstash_custom_outputs }}"
-   logstash_custom_inputs: "{{ enketo_logstash_custom_inputs }}"
-   config_logstash: true
-   tags:
-    - logstash
-
  - role: Stouts.backup
    become: true
    become_user: "root"

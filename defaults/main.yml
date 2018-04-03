@@ -27,7 +27,9 @@ enketo_nginx_proxy_read_timeout: "180s"
 enketo_managed_by_enketo: "false"
 enketo_allow_insecure_transport: "false"
 enketo_ona_authentication_url: "{{ enketo_onadata_url }}/api/v1/forms/login.json"
-enketo_openjdk_version: 7
+enketo_openjdk_version: 8
+enketo_openjdk_package: "openjdk-{{ enketo_openjdk_version }}-jre"
+enketo_openjdk_bin_path: "/usr/lib/jvm/java-{{ enketo_openjdk_version }}-openjdk-amd64/jre/bin/java"
 enketo_support_email: "support@ona.io"
 enketo_linked_server_name: "Ona"
 enketo_linked_server_url: ""
@@ -134,7 +136,7 @@ enketo_logstash_custom_inputs:
   - input: 'file'
     lines:
       - 'path => ["{{ enketo_nginx_log_dir }}/{{ enketo_nginx_https_site_name }}-ssl-access.log"]'
-      - 'start_position => "beginning"'
+      - 'start_position => "end"'
       - 'add_field => {'
       - '  ssl => true'
       - '  nginx_access => true'

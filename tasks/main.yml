@@ -13,6 +13,12 @@
     createhome: yes
     home: "{{ enketo_home }}"
 
+- name: Install Java and Logstash
+  include_tasks: install-java.yml
+  tags:
+   - java
+   - logstash
+
 - name: Install NVM and Global Node Packages
   include_tasks: install-nvm.yml
   tags:
