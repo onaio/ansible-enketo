@@ -68,6 +68,14 @@ enketo_enable_ssl: true
 enketo_ssl_src_dir: "files"
 enketo_ssl_cert: "star.ona.io.crt"
 enketo_ssl_key: "star.ona.io.key"
+enketo_nginx_enabled_sites:
+  - "{{ enketo_nginx_http_site_name }}"
+  - "{{ enketo_nginx_https_site_name }}"
+enketo_grunt_cli_version: "1.2.0"
+enketo_bower_version: "1.8.4"
+enketo_mocha_version: "5.2.0"
+enketo_pm2_version: "2.10.4"
+enketo_init_system: "upstart"
 enketo_nginx_sites:
     - server:
         name: "{{ enketo_nginx_http_site_name }}"
