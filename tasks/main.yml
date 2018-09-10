@@ -13,12 +13,6 @@
     createhome: yes
     home: "{{ enketo_home }}"
 
-- name: Install Java and Logstash
-  include_tasks: install-java.yml
-  tags:
-   - java
-   - logstash
-
 - name: Install NVM and Global Node Packages
   include_tasks: install-nvm.yml
   tags:
@@ -32,7 +26,3 @@
 - name: Install and configure Enketo
   include_tasks: install-enketo.yml
 
-- name: Install Monit
-  include_tasks: install-monit.yml
-  tags:
-   - monit

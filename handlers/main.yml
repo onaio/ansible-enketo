@@ -1,0 +1,5 @@
+---
+- name: reload pm2-{{ enketo_user }}
+  service:
+    name: "pm2-{{ enketo_user }}"
+    state: reloaded
