@@ -17,6 +17,7 @@ dependencies:
    become: true
    become_user: "root"
    redis_bind: "{{ enketo_redis_bind_address }}"
+   when: enketo_install_redis 
    tags:
     - redis
 

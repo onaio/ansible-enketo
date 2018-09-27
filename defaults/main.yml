@@ -2,6 +2,7 @@
 enketo_user: "enketo"
 enketo_home: "/home/{{ enketo_user }}"
 enketo_group: "www-data"
+enketo_install_redis: true
 enketo_redis_user: "redis"
 enketo_redis_bind_address: "127.0.0.1"
 enketo_redis_cache_dir: "/var/lib/redis/redis-cache"
