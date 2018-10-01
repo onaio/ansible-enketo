@@ -28,6 +28,7 @@
   include_tasks: configure-redis.yml
   tags:
    - redis
+  when: enketo_install_redis
 
 - name: Install and configure Enketo
   include_tasks: install-enketo.yml
