@@ -13,11 +13,11 @@
     nvm_npm_path: "{{ enketo_npm_path }}"
 
 - name: Install npm global packages
-  shell: "{{ enketo_npm_path }} install -g {{ item }}"
+  shell: "{{ enketo_npm_path }} install -g {{ item.package }}@{{ item.version }}"
   with_items:
-    - grunt-cli
-    - bower
-    - mocha
-    - pm2
+    - { "package":"grunt-cli", "version":"{{ enketo_grunt_cli_version }}" }
+    - { "package":"bower", "version":"{{ enketo_bower_version }}" }
+    - { "package":"mocha", "version":"{{ enketo_mocha_version }}" }
+    - { "package":"pm2", "version":"{{ enketo_pm2_version }}" }
   environment:
     PATH: "{{ enketo_node_dir }}/bin:{{ ansible_env.PATH }}"

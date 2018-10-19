@@ -70,6 +70,7 @@
     src: "{{ enketo_checkout_path }}"
   notify:
     - reload nginx
+    - "reload pm2-{{ enketo_user }}"
 
 - name: delete specific enketo pm2 process
   become: true
@@ -84,8 +85,9 @@
     - run-app
   notify:
     - reload nginx
+    - "reload pm2-{{ enketo_user }}"
 
-- name: start enketo pm2 service
+- name: start enketo pm2 app
   become: true
   become_user: "{{ enketo_user }}"
   command: "{{ enketo_pm2_path }} start app.js -i 0 -n {{ enketo_user }}"
@@ -98,3 +100,50 @@
     - run-app
   notify:
     - reload nginx
+    - "reload pm2-{{ enketo_user }}"
+
+- name: save the current PM2 running list
+  become: true
+  become_user: "{{ enketo_user }}"
+  command: "{{ enketo_pm2_path }} save"
+  environment:
+    PATH: "{{ enketo_node_dir }}/bin:{{ ansible_env.PATH }}"
+    HOME: "{{ enketo_home }}"
+  tags:
+    - run-app
+  notify:
+    - "reload pm2-{{ enketo_user }}"
+
+- name: delete the old startup file
+  become: true
+  become_user: "root"
+  command: "{{ enketo_pm2_path }} unstartup {{ enketo_init_system }} -u {{ enketo_user }}"
+  environment:
+    PATH: "{{ enketo_node_dir }}/bin:{{ ansible_env.PATH }}"
+  ignore_errors: yes
+  tags:
+    - run-app
+  notify:
+    - "reload pm2-{{ enketo_user }}"
+
+- name: generate an Enketo PM2 init service file
+  become: true
+  become_user: "root"
+  command: "{{ enketo_pm2_path }} startup {{ enketo_init_system }} -u {{ enketo_user }} --hp {{ enketo_home }}"
+  environment:
+    PATH: "{{ enketo_node_dir }}/bin:{{ ansible_env.PATH }}"
+  tags:
+    - run-app
+  notify:
+    - "reload pm2-{{ enketo_user }}"
+
+- name: reload systemd daemons
+  become: true
+  become_user: "root"
+  systemd:
+    daemon_reload: yes
+  when: enketo_init_system == "systemd"
+  tags:
+    - run-app
+  notify:
+    - "reload pm2-{{ enketo_user }}"
