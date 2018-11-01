@@ -21,16 +21,10 @@ enketo_grunt_path: "{{ enketo_node_dir }}/bin/grunt"
 enketo_pm2_path: "{{ enketo_node_dir }}/bin/pm2"
 enketo_app_name: "Enketo Smart Paper for Ona"
 enketo_app_port: 8005
-enketo_nginx_site_name: "enketo.ona.io"
 enketo_onadata_url: "https://api.ona.io"
-enketo_upstream: "http://localhost:{{ enketo_app_port }}"
-enketo_nginx_proxy_read_timeout: "180s"
 enketo_managed_by_enketo: "false"
 enketo_allow_insecure_transport: "false"
 enketo_ona_authentication_url: "{{ enketo_onadata_url }}/api/v1/forms/login.json"
-enketo_openjdk_version: 8
-enketo_openjdk_package: "openjdk-{{ enketo_openjdk_version }}-jre"
-enketo_openjdk_bin_path: "/usr/lib/jvm/java-{{ enketo_openjdk_version }}-openjdk-amd64/jre/bin/java"
 enketo_support_email: "support@ona.io"
 enketo_linked_server_name: "Ona"
 enketo_linked_server_url: ""
@@ -62,89 +56,10 @@ enketo_piwik_anaytics_tracker_url: ""
 enketo_piwik_anaytics_site_id: ""
 enketo_logo_source: "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAJYAAAA4CAYAAAAfFwF8AAAMFElEQVR4Ae1cC3AV1RnOzU0gJOGd8KgICJQWnCCvkuFZC4KoLZWO1gGEEh6mCkMFCUZkVEShoKgIplQFHQKFWmhLedhSq5U3VhBBHTXyKFQoAookBAIht993m8ucnJzdvbt7cnPvnf1nvuw5/+ucs+ff89rN9QUCgQSPavMOnE4vW/16TtmbhQsSrpanoCZH0h6YN9nf96eba7NWbsv2eYHl9ha6sk+9VDBj4eUdG8fDS7LgqSL1wSX9k34wcKfAi6mkF1i12F2lT+dsLP9kzxBUQQyqYI18DTOK6hds7ViL1XNVdJIra8/Y8R24kD9s99XjX2QbOQiUnLvBSBYLfC+wdPXS6dPp5acO9fQFrtYLJFacT2re6UBCRkZxNffFxRmlr85aiqDqVU0mMBJb3rBNyMZc0gssHV128nDr0pULppd/vOcXCVfKGiT4/WeSsvpvTs0rmAT3JUIRvtJXHnm1fO/bw8DzCfwqycSmLT5Kn7jwnirMGMt4aywNHVa2Y9OwsoK8dXAlPqiBxMxW+9Nf2NI9VETJtKFFFaeOdQjlVdfExs0OpOTO/WVSVp9dKnms8LzAct9TvvOjOn8LN/VVrhKva/+P9GmLJ5QunbmqvGh/H5VOiOdrlHkgZUx+bnL2bbtDvFi9eoHlvucYWGfhprGBq8vgXzCRB82wC3w3ZVT+9OS+t79v4Cem2IkxVdvorGwg+bax80yqVgcyo6ALmvkaN99QZ/L8CfESVGyUF1jBrnX3J/GmPlxfbXfiJbF+ky31Jz2ZW7dz7y+c2EerjRdYGnqmbla/w6kTZs/ypaR9asedv2PXTUmj8ycmdOp/0o5dLOh6ayyNvVS+a+Og0iUz1sBlhpXbpOxbl6eOfSgvoUGrr610Y1HuBZbmXrtyaF+Pi4/duxVuU41cJ2cPfqnemNmzEho1OmekE+t8byrU3IPJ7bvvTZv64khMizyCqEb+rL6r642YlR/PQcVGe4FVrevdM/w9b1mfkjNriq9OyinBWyCp24CCtLsezknIzBRP4wWV+El6U2EN9mX5wZ29fQmBRiwCnycFkrr0+zuSV2uwyKhx7QVW1HRFfFXEmwrjqz+jpjVeYEVNV8RXRUJv4wegWXwt0cxB8/4Nm1zgkIEtv478AKgryPnu7E7gqMALNzkYigWC8iKklwh5MclPU8YBMwA+RJeApwGeNVlROhQeB1hP0kkgD9jDjIJY1htAV4UsHNZsKK00UJwK/gMGMjtsvtweHaYB14bLgC4KffYf7+kWhez/LKwpuwFlXFy6oCuwTQa4SBXRBPl3ABXtBzMLEPWt0qMVjq6CNxPwK3zdpdAna6hCVy77WYVtBXjtFLZp4C1X6NtlPSz55hr4ceAyoIvOw1EiILc3lO8MWWGYhZ2EHvukHhCyD175511AB8k3hb4nWzheAXk6UKVSBvlG4J8AVLQPzLaA7IeBoCLeEFlXzN+vMqrkrVLY3mqib0d0EMoNBf+tkX7LjoMwdDkI3A2I7WWaQZwLFAN2aTEMMoBrPjk9cBrUQfkOnIyEzffCtGsPPX4poKJuYDZRCDg9qaiFilnJ64HrYhP5CIUsRcFzwkqDURvBsB3SrI9O4vLnXoXDmeBxScElgF2aDIPfA5khQwaWLuIbfrvkh0G43x9xrWYUKHbLNdPnGoz1MqIKhcBMX6FuyDoPyeeClGuZc0JeV/Ky5Ggi8k8BoTW3JA4rOxBarwDBmNIVWAfhMDes4tVKToJS7ck5l6PhHGCwhYua/BZ9G8rmBiNEe5EoBK6EGBqux+DjbsEPR29uDnQQv+WfDvitIpT/Jv2NSYmlkG0EOIS6OVG+GfbDgT8BtUXXo2DumMweNnbymzYryHt4ERADRnRBOR/MDcDzogBpjo4s0w9wqnJLm+DgJcnJNOQ7STynWc4oY4BCq8Bi4JjN8QwmfvbBIdsNcX2UA+wExPdrbnzatf0bDMT1jWxfBEYBwHtihxhQ84EVJkYlkJ0FGGQysdw5wGuSIAv5P0o8MfsHZORgZF8RIv1KzCjSDG6un9iGmwAuFVoBRnQjBE2tAotOjxp50Mz/CfzdAfAGqm6w5uKquJuLXPsqnKoZPkDrAZ4D2SW2hZ151K6hoM/glL8w5TmTGXG9JtvI+s3BMNoQUfcMcDvwL2ZAHwK/A/iAjQeMRveFRgLY1AotQqkNI1zyIJQ3yaLMzZDnWejEovgZi0rzvoSCKqRajsQUgKOsEQ2JtsDiVnedUW1rgM+jDo5WDSx8czsdj5Rt0iiOknyToCLKfqMShHjRFlis10AgUqNDT5TVi4WaUDfIjpnI41VktW7+q1nDozGwWN9RQFsmapA4Ba6w8L8c8sMWOp5YcQeiNbC44+H8rutEW9H04AtWs/Z/BiMuUrkI9sjmHbDaFabBH7e7KtoOJo8IaoLY4fcBhcCBmigAPttY+OV0vNdCJxxxPSg9Bqi29d+Cz3buA+KKrAKLHdzBoMXktwNuAa4Y6Jix34awFPixgRIX1GsBLrAjffzwCcrkgaUO4qFhZiVU/nhGxINZJ0cZKn9RwTObCsKp4HehxMByQmdgtAYw27bSv47vkOzUbw+UORVHiviADgSSIlVgJMpxG1gtUUnurJwSD9usRoZfQ6e/0wIc2DWFTaRHyAEos66DukatidvA4om0/KbcTmPZgSMtDNIhj+SoxRHkQYs66RZ/BIdOlhO666HNn9vA+jNq8oKG2vSFDwapEQ2HgK8QuF6JBD2HQswOD3XW4SScbQbcPKA666PFl9PA+gql5wNPAGWAW+JimQt1I+I0wc9ZuEuNFC1BQWYvW3XU459wMg7YqsNZNPmwWjDy9LWrosIcto8DFQqZE9Y5GD0L8O359w0cWB0PGJg5ZneB5Z0AA8wNXYTxMwCPTmRiu7mJiTuyCiwGjtUbcl035X042g7weCFSU55Z3etAuBjgWdYuM0ULGdeRp4FI3UeL6kRG7HQqrKnaTYLjYzXlXOH3CHiHFXyRxSnfI5t3INoCiwvYn9tsg1N1jsZvAc8DnK6MaBgEPBbxyMYdiLbAYtXfAyJxvHAW5fB1CtdQ3IyY0VAIbzRTiEOZ1XdxPzJrczQGFuu7DfjcrOIaZOKmpC38cdtvRI0heBH4jpFCjPIPmtSb6++bDeQ8RH7IQEZ2RbQGFg8M5wF8SVtTdEJy/CjyZrvcgZCPBPySXSxnZ1hU/i+Q3yPpXIf8k0CKxBez71jtCtOgXSRaSGmuTX4LLAP4VaFO4stZfhEgjiw6/cu+VoHBd5OPyAIhPxPp1wE7RwRmXzeEXPNBGgvU5IMUKku8Wm1c6kOZ/Tsd2Am0BroDLQCzB2yGVWBxROsAmBHXKNw5dQaKzRRtyhi0gwBOUXVs2jpRvwyjTQA3D+0NHHBK/C+QClA/HLL6uoE+eI95psURcTUQSZqKwriBMSKutXpWwkhH5P8Hma90TYU8oV4oeteU/hp+5mvyFY6bHVDiQa0Z8UmdbKbgQvYUbCO9SViJMt9zUWfRlG9hOE1+qSuw6Fyei8nTQVxrrdPhKEwfS6HHADOjMWZCFzJONcNd2Dsx5cPLNpc6MZZs+MnRBiCgM7CkMrRlOSW+AVRo82jtqB9UeGIeLvHVly6K9FsH3tfXgPUuG8B78EOAS4XgPxzej2s5My6JkRou8UsGnnqHS2uhuAgw+gLiY8i4RpGJQ7OKjqqYEo/nNEZPsby+4mLeTnukoq5luVEqvJYzT7ADtxqosJN3G8iM2Fzf8R4fMlIw4PPB3w6kV5HjN40aAAuA04AT4g+fPQcEfygX12u/kYR0F4C/+STTETBaAKKuVboT9I8DMn0DRg6g+jGxR8GXfyPrAniq34eSy8+E3lqFPf0NB2T9/uCp2gp2WFQELf5QnOzXLN8L+rST6T4wVP1h5isk6w3bZUCJ7FSR/xS8cUBTIGQfvAYLR6RxS9wMSK4SdeFnuBO4ZKDeEvw5wPhK+VxcuYU9Vpm3c2kD5WnAlEqjElyHAB8CqtGFu8mfAQuA64HPAL6P3AbIow5Y1agpOLR/uVKyBdc84EBlXr6wrTyicUJ88r90YMiNUw9gBPABsAngCB4AnBJHH8ZDNvAE0BEIUTESawDuJM8DJ4BqZf0PgW1op9hH7gUAAAAASUVORK5CYII="
 enketo_logo_href: ""
-enketo_nginx_http_site_name: "{{ enketo_nginx_site_name }}-http"
-enketo_nginx_https_site_name: "{{ enketo_nginx_site_name }}-https"
-enketo_nginx_client_max_body_size: "100M"
 enketo_enable_ssl: true
-enketo_ssl_src_dir: "files"
-enketo_ssl_cert: "star.ona.io.crt"
-enketo_ssl_key: "star.ona.io.key"
-enketo_nginx_sites:
-    - server:
-        name: "{{ enketo_nginx_http_site_name }}"
-        __listen: "80;\n  listen [::]:80;\n"
-        server_name: "{{ enketo_nginx_site_name }}"
-        return: "301 https://$server_name$request_uri"
-        ssl:
-          enabled: false
-    - server:
-        name: "{{ enketo_nginx_https_site_name }}"
-        __listen: "443;\n  listen [::]:443;\n"
-        server_name: "{{ enketo_nginx_site_name }}"
-        client_max_body_size: "{{ enketo_nginx_client_max_body_size }}"
-        ssl:
-          enabled: true
-          cert: "{{ enketo_ssl_cert }}"
-          key: "{{ enketo_ssl_key }}"
-          src_dir: "{{ enketo_ssl_src_dir }}"
-          conf: "{{ enketo_nginx_site_name }}-ssl.conf"
-        location1:
-          name: /
-          proxy_pass: "{{ enketo_upstream }}"
-          proxy_set_header:
-           - Accept-Encoding ""
-           - Host $host
-           - X-Real-IP $remote_addr
-           - X-Forwarded-For $proxy_add_x_forwarded_for
-           - X-Forwarded-Host $server_name
-           - X-Forwarded-Proto https
-          proxy_read_timeout: "{{ enketo_nginx_proxy_read_timeout }}"
-          proxy_redirect: "off"
-          proxy_next_upstream: "error timeout invalid_header http_500 http_502 http_503 http_504"
-enketo_redis_backup_enabled: true
-enketo_redis_backup_target: "file:///backups/enketo/redis"
-enketo_redis_backup_schedule: "0 0 * * 0"
-enketo_backup_max_age: "1M"
-enketo_backup_full_max_age: "1M"
-enketo_backup_profiles:
-    - name: redis
-      schedule: "{{ enketo_redis_backup_schedule }}"
-      source: "/var/lib/redis"
-      target: "{{ enketo_redis_backup_target }}"
-enketo_backup_gpg_key: disabled
-enketo_backup_target_user: ""
-enketo_backup_target_pass: ""
-enketo_nginx_log_dir: "/var/log/nginx"
+enketo_grunt_cli_version: "1.2.0"
+enketo_bower_version: "1.8.4"
+enketo_mocha_version: "5.2.0"
+enketo_pm2_version: "2.10.4"
+enketo_init_system: "upstart"
 
-enketo_graylog_server: "127.0.0.1"
-enketo_graylog_port: "12204"
-
-enketo_logstash_plugins:
-  - logstash-filter-elasticsearch
-  - logstash-filter-json_encode
-  - logstash-filter-translate
-  - logstash-input-file
-  - logstash-input-beats
-  - logstash-output-email
-  - logstash-output-gelf
-enketo_logstash_custom_outputs:
-  - output: 'gelf'
-    lines:
-      - 'host => "{{ enketo_graylog_server }}"'
-      - 'port => "{{ enketo_graylog_port }}"'
-      - 'sender => "{{ enketo_nginx_site_name }}"'
-enketo_logstash_custom_inputs:
-  - input: 'file'
-    lines:
-      - 'path => ["{{ enketo_nginx_log_dir }}/{{ enketo_nginx_https_site_name }}-ssl-access.log"]'
-      - 'start_position => "end"'
-      - 'add_field => {'
-      - '  ssl => true'
-      - '  nginx_access => true'
-      - '  from_nginx => true'
-      - '  from_ona => true'
-      - '  from_host => "%{host}"'
-      - '  from_domain => "{{ enketo_nginx_site_name }}"'
-      - '  from_{{ enketo_user }} => true'
-      - '  git_version => "{{ enketo_git_branch }}"'
-      - '}'

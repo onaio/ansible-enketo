@@ -7,11 +7,6 @@ Role Dependencies
 -----------------
 
  - [DavidWittman.redis](https://github.com/DavidWittman/ansible-redis)
- - [mrlesmithjr.logstash](https://github.com/mrlesmithjr/ansible-logstash)
- - [Stouts.backup](https://github.com/Stouts/Stouts.backup)
- - [onaio.nginx](http://github.com/onaio/ansible-nginx)
- - [onaio.collectd](http://github.com/onaio/ansible-collectd)
- - [onaio.monit](http://github.com/onaio/ansible-monit)
  - [onaio.nvm](http://github.com/onaio/ansible-nvm)
 
 
