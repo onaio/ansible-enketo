@@ -13,7 +13,7 @@ galaxy_info:
     - enketo
 
 dependencies:
- - role: DavidWittman.redis
+ - role: onaio.redis
    become: true
    become_user: "root"
    redis_bind: "{{ enketo_redis_bind_address }}"
