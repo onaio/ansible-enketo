@@ -2,13 +2,12 @@ Enketo
 ======
 
 Use this role to setup [Enketo](https://enketo.org) behind [NGINX](https://nginx.org/en).
- 
+
 Role Dependencies
 -----------------
 
- - [DavidWittman.redis](https://github.com/DavidWittman/ansible-redis)
+ - [onaio.redis](https://github.com/onaio/ansible-redis)
  - [onaio.nvm](http://github.com/onaio/ansible-nvm)
-
 
 Role Variables
 --------------
