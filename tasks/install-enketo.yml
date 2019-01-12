@@ -35,12 +35,6 @@
     group: "{{ enketo_group }}"
     mode: "0644"
 
-- name: Patch express.js file for additional settings
-  patch:
-    src: templates/enketo/express.js.diff
-    basedir: "{{ enketo_checkout_path }}"
-    strip: 1
-
 - name: Grunt Compile CSS and JS
   become: true
   become_user: "{{ enketo_user }}"
