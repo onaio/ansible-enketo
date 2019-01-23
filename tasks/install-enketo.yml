@@ -40,6 +40,7 @@
     src: templates/enketo/express.js.diff
     basedir: "{{ enketo_checkout_path }}"
     strip: 1
+  when: enketo_git_branch < "1.74.0"
 
 - name: Grunt Compile CSS and JS
   become: true
