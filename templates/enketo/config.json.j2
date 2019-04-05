@@ -24,11 +24,7 @@
     "support": {
         "email": "{{ enketo_support_email }}"
     },
-    "widgets": [
-        "note", "select-desktop", "select-mobile", "autocomplete", "geo", "textarea",
-        "table", "radio", "date", "time", "datetime", "compact", "file", "draw",
-        "likert", "distress", "horizontal", "image-view", "comment", "image-map", "date-mobile"
-    ],
+    "widgets": [{% for widget in enketo_widgets %}"{{ widget }}"{% if loop.index != loop.length %}, {% endif %}{% endfor %}],
     "analytics": "google",
     "google": {
         "analytics": {

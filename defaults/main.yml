@@ -26,6 +26,32 @@ enketo_managed_by_enketo: "false"
 enketo_allow_insecure_transport: "false"
 enketo_ona_authentication_url: "{{ enketo_onadata_url }}/api/v1/forms/login.json"
 enketo_support_email: "support@ona.io"
+enketo_widgets:
+- note
+- select-desktop
+- select-mobile
+- autocomplete
+- geo
+- textarea
+- url
+- table
+- radio
+- date
+- time
+- datetime
+- compact
+- file
+- draw
+- rank
+- likert
+- range
+- horizontal
+- image-view
+- comment
+- image-map
+- date-native
+- date-mobile
+- text-max
 enketo_linked_server_name: "Ona"
 enketo_linked_server_url: ""
 enketo_timeout: 300000
