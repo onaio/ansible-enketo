@@ -11,6 +11,7 @@
     nvm_install_path: "{{ enketo_nvm_root }}"
     nvm_node_dir: "{{ enketo_node_dir }}"
     nvm_npm_path: "{{ enketo_npm_path }}"
+    nvm_version: "{{ enketo_nvm_version }}"
 
 - name: Install npm global packages
   shell: "{{ enketo_npm_path }} install -g {{ item.package }}@{{ item.version }}"
