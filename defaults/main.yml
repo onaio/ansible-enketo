@@ -16,7 +16,7 @@ enketo_versioned_path: "{{ enketo_codebase_path }}-versioned"
 enketo_checkout_path: "{{ enketo_versioned_path }}/{{ ansible_date_time['epoch'] }}"
 enketo_deploy_key: "/home/ubuntu/.ssh/id_rsa"
 enketo_git_url: "https://github.com/enketo/enketo-express.git"
-enketo_git_branch: "1.68.0"
+enketo_git_branch: "1.78.0"
 enketo_bower_path: "{{ enketo_node_dir }}/bin/bower"
 enketo_grunt_path: "{{ enketo_node_dir }}/bin/grunt"
 enketo_pm2_path: "{{ enketo_node_dir }}/bin/pm2"
@@ -40,17 +40,18 @@ enketo_widgets:
 - date
 - time
 - datetime
-- compact
+- select-media
 - file
 - draw
 - rank
 - likert
 - range
-- horizontal
+- columns
 - image-view
 - comment
 - image-map
 - date-native
+- date-native-ios
 - date-mobile
 - text-max
 enketo_linked_server_name: "Ona"
