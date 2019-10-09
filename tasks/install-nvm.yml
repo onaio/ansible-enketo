@@ -2,8 +2,6 @@
 - name: Install Node Version Manager
   include_role:
     name: onaio.nvm
-  become: true
-  become_user: "{{ enketo_user }}"
   vars:
     nvm_user: "{{ enketo_user }}"
     nvm_group: "{{ enketo_group }}"
