@@ -138,6 +138,10 @@
   notify:
     - "reload pm2-{{ enketo_user }}"
 
+- name: Cleanup pm2 processes
+  shell:
+    ps aux | grep PM2 | grep -v grep | awk '{print $2}' | xargs kill -9
+
 - name: reload systemd daemons
   become: true
   become_user: "root"
