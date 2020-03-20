@@ -140,7 +140,7 @@
 
 - name: Cleanup pm2 processes
   shell:
-    ps aux | grep PM2 | grep -v grep | awk '{print $2}' | xargs kill -9
+    ps aux | grep PM2 | grep "{{ enketo_user }}" | grep -v grep | awk '{print $2}' | xargs kill -9
 
 - name: reload systemd daemons
   become: true
