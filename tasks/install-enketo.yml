@@ -175,11 +175,13 @@
     - "reload pm2-{{ enketo_user }}"
 
 - name: Disable rejection of self signed certs
+  become: true
+  become_user: "root"
   lineinfile:
     path: "/etc/systemd/system/pm2-{{ enketo_user }}.service"
     line: "export NODE_TLS_REJECT_UNAUTHORIZED=0"
     state: present
-  when: enketo_node_tls_reject is defined
+  when: enketo_set_node_tls_reject_env is defined and enketo_set_node_tls_reject_env
 
 - block:
     - name: Replace pm2 resurrect with pm2 start
