@@ -127,6 +127,11 @@
   notify:
     - "reload pm2-{{ enketo_user }}"
 
+- name: Cleanup pm2 processes
+  become: true
+  become_user: "root"
+  shell: ps aux | grep PM2 | grep "{{ enketo_user }}" | grep -v grep | awk '{print $2}' | xargs kill -9
+
 - name: generate an Enketo PM2 init service file
   become: true
   become_user: "root"
@@ -137,11 +142,6 @@
     - run-app
   notify:
     - "reload pm2-{{ enketo_user }}"
-
-- name: Cleanup pm2 processes
-  become: true
-  become_user: "root"
-  shell: ps aux | grep PM2 | grep "{{ enketo_user }}" | grep -v grep | awk '{print $2}' | xargs kill -9
 
 - name: reload systemd daemons
   become: true
