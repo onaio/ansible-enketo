@@ -148,9 +148,8 @@
   become_user: "root"
   lineinfile:
     path: "/etc/systemd/system/pm2-{{ enketo_user }}.service"
-    line: "export NODE_TLS_REJECT_UNAUTHORIZED=0"
+    line: "export NODE_TLS_REJECT_UNAUTHORIZED={{ enketo_node_tls_reject_unauthorized | default(1) }}"
     state: present
-  when: enketo_set_node_tls_reject_env is defined and enketo_set_node_tls_reject_env
 
 - name: reload systemd daemons
   become: true
