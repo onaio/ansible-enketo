@@ -90,4 +90,5 @@ enketo_bower_version: "1.8.4"
 enketo_mocha_version: "5.2.0"
 enketo_pm2_version: "2.10.4"
 enketo_init_system: "upstart"
+enketo_enable_submission_logging: false
 

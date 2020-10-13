@@ -19,7 +19,7 @@
     "themes supported":[{% for theme in enketo_supported_themes %}"{{ theme }}"{% if loop.index != loop.length %}, {% endif %}{% endfor %}],
     "base path": "",
     "log": {
-        "submissions": false
+        "submissions": {{ enketo_enable_submission_logging }}
     },
     "support": {
         "email": "{{ enketo_support_email }}"
