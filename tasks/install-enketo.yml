@@ -130,7 +130,7 @@
 - name: Cleanup pm2 processes
   become: true
   become_user: "root"
-  shell: ps aux | grep PM2 | grep "{{ enketo_user }}" | grep -v grep | awk '{print $2}' | xargs kill -9
+  shell: "killall -u {{ enketo_user }}"
 
 - name: generate an Enketo PM2 init service file
   become: true
