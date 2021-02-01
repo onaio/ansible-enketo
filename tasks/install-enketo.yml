@@ -143,6 +143,20 @@
   notify:
     - "reload pm2-{{ enketo_user }}"
 
+- block:
+    - name: Replace pm2 resurrect with pm2 start
+      lineinfile:
+        regexp: "^ExecStart"
+        line: "ExecStart={{ enketo_pm2_path }} start app.js -n {{ enketo_user }} -i 0"
+        dest: "/etc/systemd/system/pm2-{{ enketo_user }}.service"
+
+    - name: Add WorkingDirectory in pm2-enketo.service file
+      lineinfile:
+        path: /etc/systemd/system/pm2-{{ enketo_user }}.service
+        insertbefore: "^ExecStart"
+        line: "WorkingDirectory={{ enketo_codebase_path }}"
+  when: enketo_init_system == "systemd"
+
 - name: reload systemd daemons
   become: true
   become_user: "root"
