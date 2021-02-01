@@ -143,6 +143,14 @@
   notify:
     - "reload pm2-{{ enketo_user }}"
 
+- name: Disable rejection of self signed certs
+  become: true
+  become_user: "root"
+  lineinfile:
+    path: "/etc/systemd/system/pm2-{{ enketo_user }}.service"
+    line: "export NODE_TLS_REJECT_UNAUTHORIZED={{ enketo_node_tls_reject_unauthorized | default(1) }}"
+    state: present
+
 - name: reload systemd daemons
   become: true
   become_user: "root"
