@@ -41,13 +41,13 @@
     },
     "maps": [{% for v in enketo_maps %}{
             "name": "{{ v.name }}",
-            "tiles": [
-{% for tile in v.tiles %}
-                "{{ tile }}"
-{% if loop.index != loop.length %},{% endif %}
-{% endfor %}
-            ],
-            "attribution": "{{ v.attribution }}"
+            "tiles": {% if v.tiles is string -%}
+                        "{{ v.tiles }}",
+                    {% else -%}
+                    [{% for tile in v.tiles %}"{{ tile }}"
+                      {% if loop.index != loop.length %},{% endif %}{% endfor %}],
+                    {%- endif %}
+        "attribution": "{{ v.attribution }}"
         }{% if loop.index != loop.length %},{% endif %}{% endfor %}
 
     ],
