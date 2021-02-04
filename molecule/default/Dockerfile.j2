@@ -12,9 +12,10 @@ ENV {{ var }} {{ value }}
 {% endfor %}
 {% endif %}
 
-
 RUN apt-get update && \
       apt-get -y install sudo
+
+RUN apt-get -y install psmisc
 
 ENV ANSIBLE_USER=ansible
 RUN set -xe

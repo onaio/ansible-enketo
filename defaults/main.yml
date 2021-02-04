@@ -77,13 +77,6 @@ enketo_maps:
   tiles:
   - https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png
   attribution: "Map data © <a href='http://openstreetmap.org'>OpenStreetMap</a> contributors"
-- name: "satellite"
-  tiles: "GOOGLE_SATELLITE"
-  attribution: ""
-- name: "terrain"
-  tiles:
-  - https://{s}.tile.opentopomap.org/{z}/{x}/{y}.png
-  attribution: "Map data © <a href='https://opentopomap.org/'>OpenStreetMap</a> contributors"
 enketo_google_analytics_ua: ""
 enketo_google_analytics_domain: ""
 enketo_google_api_key: ""
@@ -100,3 +93,4 @@ enketo_init_system: "upstart"
 enketo_enable_submission_logging: "false"
 enketo_api_salt: ""
 enketo_api_token: ""
+test: false

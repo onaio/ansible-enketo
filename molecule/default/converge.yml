@@ -4,4 +4,6 @@
   tasks:
     - name: "Include enketo"
       include_role:
-        name: "enketo"
+        name: "ansible-enketo"
+      vars:
+        - test: true

@@ -6,7 +6,7 @@
   tasks:
     - name: Populate config file.
       stat:
-        path: "{{ enketo_checkout_path }}/config/config.json"
+        path: "/home/enketo/app/config/config.json"
       register: config_file
 
     - name: Fail if config file does not exist
@@ -15,8 +15,8 @@
 
     - name: Check that host file belongs to correct group
       fail:
-      when: not host_file.stat.gr_name == ""{{ enketo_group }}""
+      when: not config_file.stat.gr_name == "www-data"
 
     - name: Check that host file belongs to correct user
       fail:
-      when: not host_file.stat.pw_name == ""{{ enketo_user }}""
+      when: not config_file.stat.pw_name == "enketo"

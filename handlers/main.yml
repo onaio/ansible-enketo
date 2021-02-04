@@ -3,3 +3,8 @@
   service:
     name: "pm2-{{ enketo_user }}"
     state: reloaded
+
+- name: reload nginx
+  debug:
+    msg: "dummy reload nginx task"
+  when: test
