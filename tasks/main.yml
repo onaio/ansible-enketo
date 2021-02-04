@@ -13,6 +13,10 @@
     createhome: yes
     home: "{{ enketo_home }}"
 
+- name: Install curl package
+  apt:
+    name: curl
+
 - name: Install NVM and Global Node Packages
   include_tasks: install-nvm.yml
   tags:
@@ -26,4 +30,3 @@
 
 - name: Install and configure Enketo
   include_tasks: install-enketo.yml
-

@@ -1,0 +1,9 @@
+---
+- name: Converge
+  hosts: all
+  tasks:
+    - name: "Include enketo"
+      include_role:
+        name: "ansible-enketo"
+      vars:
+        - test: true
