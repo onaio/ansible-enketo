@@ -94,3 +94,9 @@ enketo_enable_submission_logging: "false"
 enketo_api_salt: ""
 enketo_api_token: ""
 test: false
+
+# ip_filtering:
+#   allowPrivateIPAddress: true
+#   allowMetaIPAddress: true
+#   allowIPAddressList: "[\"10.2.2.2\"]"
+#   denyIPAddressList: "[\"10.2.2.3\"]"
