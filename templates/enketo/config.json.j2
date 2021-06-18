@@ -13,6 +13,12 @@
             "external login url that sets cookie": "{{ enketo_ona_authentication_url }}?return={RETURNURL}"
         }
     },
+    "ip filtering" : {
+	    "allowPrivateIPAddress": {{ip_filtering.allowPrivateIPAddress|default('false')|lower}},
+	    "allowMetaIPAddress": {{ip_filtering.allowMetaIPAddress|default('false')|lower}},
+	    "allowIPAddressList": {{ip_filtering.allowIPAddressList|default('[]')}},
+	    "denyIPAddressList": {{ip_filtering.denyIPAddressList|default('[]')}}
+    },
     "timeout": {{ enketo_timeout }},
     "encryption key": "{{ enketo_api_salt }}",
     "default theme": "{{ enketo_supported_themes | first }}",
