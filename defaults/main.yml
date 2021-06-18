@@ -90,13 +90,13 @@ enketo_bower_version: "1.8.4"
 enketo_mocha_version: "5.2.0"
 enketo_pm2_version: "2.10.4"
 enketo_init_system: "upstart"
-enketo_enable_submission_logging: "false"
+enketo_enable_submission_logging: false
 enketo_api_salt: ""
 enketo_api_token: ""
 test: false
 
-# ip_filtering:
-#   allowPrivateIPAddress: true
-#   allowMetaIPAddress: true
-#   allowIPAddressList: "[\"10.2.2.2\"]"
-#   denyIPAddressList: "[\"10.2.2.3\"]"
+ip_filtering:
+  allowPrivateIPAddress: false
+  allowMetaIPAddress: false
+  allowIPAddressList: [] # "[\"10.2.2.2\"]"
+  denyIPAddressList: [] # "[\"10.2.2.2\"]"
