@@ -16,8 +16,8 @@
     "ip filtering" : {
 	    "allowPrivateIPAddress": {{ip_filtering.allowPrivateIPAddress|default('false')|lower}},
 	    "allowMetaIPAddress": {{ip_filtering.allowMetaIPAddress|default('false')|lower}},
-	    "allowIPAddressList": {{ip_filtering.allowIPAddressList|default('[]')}},
-	    "denyIPAddressList": {{ip_filtering.denyIPAddressList|default('[]')}}
+	    "allowIPAddressList": {{ip_filtering.allowIPAddressList|default('[]')|to_json}},
+	    "denyIPAddressList": {{ip_filtering.denyIPAddressList|default('[]')|to_json}}
     },
     "timeout": {{ enketo_timeout }},
     "encryption key": "{{ enketo_api_salt }}",
