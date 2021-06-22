@@ -98,5 +98,5 @@ test: false
 ip_filtering:
   allowPrivateIPAddress: false
   allowMetaIPAddress: false
-  allowIPAddressList: [] # "[\"10.2.2.2\"]"
-  denyIPAddressList: [] # "[\"10.2.2.2\"]"
+  allowIPAddressList: [] # ["10.2.2.2"]
+  denyIPAddressList: [] # ["{{variable_with_ip}}"]
