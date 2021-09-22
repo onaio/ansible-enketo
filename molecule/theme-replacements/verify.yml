@@ -1,0 +1,31 @@
+---
+- name: Verify
+  hosts: all
+  gather_facts: false
+  tasks:
+  - name: Ensure offline color configuration was set for form header
+    lineinfile:
+      name: "/home/enketo/app/app/views/styles/component/_form_header.scss"
+      line: "$offline-color: #0b77c2;"
+      state: present
+    check_mode: yes
+    register: conf
+    failed_when: (conf is changed) or (conf is failed)
+
+  - name: Ensure offline color configuration was set for theme
+    lineinfile:
+      name: "/home/enketo/app/app/views/styles/theme-kobo/_variables.scss"
+      line: "$offline-color: #0b77c2;"
+      state: present
+    check_mode: yes
+    register: conf
+    failed_when: (conf is changed) or (conf is failed)
+
+  - name: Ensure brand color configuration was set for theme
+    lineinfile:
+      name: "/home/enketo/app/app/views/styles/theme-kobo/_variables.scss"
+      line: "$brand-primary-color: #0b77c2;"
+      state: present
+    check_mode: yes
+    register: conf
+    failed_when: (conf is changed) or (conf is failed)
