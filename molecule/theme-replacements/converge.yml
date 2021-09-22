@@ -1,0 +1,12 @@
+---
+- name: Converge
+  hosts: all
+  tasks:
+    - name: "Include ansible-enketo"
+      include_role:
+        name: "ansible-enketo"
+      vars:
+        - test: true
+        - enketo_offline_color_hexcode: "#0b77c2"
+        - enketo_primary_color_hexcode: "#0b77c2"
+        - enketo_theme_to_replace: "kobo"
