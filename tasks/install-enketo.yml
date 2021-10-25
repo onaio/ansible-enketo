@@ -42,6 +42,37 @@
     strip: 1
   when: enketo_git_branch < "1.74.0"
 
+- name: Replace Enketo offline color for form header
+  become: true
+  become_user: "{{ enketo_user }}"
+  ansible.builtin.replace:
+    path: "{{ enketo_codebase_path }}/app/views/styles/component/_form_header.scss"
+    regexp: "^\\$offline-color: .*$"
+    replace: "$offline-color: {{ enketo_offline_color_hexcode }};"
+  when: enketo_offline_color_hexcode is defined and enketo_offline_color_hexcode
+
+- name: Replace Enketo brand color for theme
+  become: true
+  become_user: "{{ enketo_user }}"
+  ansible.builtin.replace:
+    path: "{{ enketo_codebase_path }}/app/views/styles/theme-{{ enketo_theme_to_replace }}/_variables.scss"
+    regexp: "^\\$brand-primary-color: .*$"
+    replace: "$brand-primary-color: {{ enketo_primary_color_hexcode }};"
+  when:
+    - enketo_theme_to_replace is defined and enketo_theme_to_replace
+    - enketo_primary_color_hexcode is defined and enketo_primary_color_hexcode
+
+- name: Ensure offline color is set for theme
+  become: true
+  become_user: "{{ enketo_user }}"
+  ansible.builtin.lineinfile:
+    path: "{{ enketo_codebase_path }}/app/views/styles/theme-{{ enketo_theme_to_replace }}/_variables.scss"
+    regexp: "^\\$offline-color: .*$"
+    line: "$offline-color: {{ enketo_offline_color_hexcode }};"
+  when:
+    - enketo_theme_to_replace is defined and enketo_theme_to_replace
+    - enketo_offline_color_hexcode is defined and enketo_offline_color_hexcode
+
 - name: Grunt Compile CSS and JS
   become: true
   become_user: "{{ enketo_user }}"
@@ -87,37 +118,6 @@
   notify:
     - reload nginx
     - "reload pm2-{{ enketo_user }}"
-
-- name: Replace Enketo offline color for form header
-  become: true
-  become_user: "{{ enketo_user }}"
-  ansible.builtin.replace:
-    path: "{{ enketo_codebase_path }}/app/views/styles/component/_form_header.scss"
-    regexp: "^\\$offline-color: .*$"
-    replace: "$offline-color: {{ enketo_offline_color_hexcode }};"
-  when: enketo_offline_color_hexcode is defined and enketo_offline_color_hexcode
-
-- name: Replace Enketo brand color for theme
-  become: true
-  become_user: "{{ enketo_user }}"
-  ansible.builtin.replace:
-    path: "{{ enketo_codebase_path }}/app/views/styles/theme-{{ enketo_theme_to_replace }}/_variables.scss"
-    regexp: "^\\$brand-primary-color: .*$"
-    replace: "$brand-primary-color: {{ enketo_primary_color_hexcode }};"
-  when:
-    - enketo_theme_to_replace is defined and enketo_theme_to_replace
-    - enketo_primary_color_hexcode is defined and enketo_primary_color_hexcode
-
-- name: Ensure offline color is set for theme
-  become: true
-  become_user: "{{ enketo_user }}"
-  ansible.builtin.lineinfile:
-    path: "{{ enketo_codebase_path }}/app/views/styles/theme-{{ enketo_theme_to_replace }}/_variables.scss"
-    regexp: "^\\$offline-color: .*$"
-    line: "$offline-color: {{ enketo_offline_color_hexcode }};"
-  when:
-    - enketo_theme_to_replace is defined and enketo_theme_to_replace
-    - enketo_offline_color_hexcode is defined and enketo_offline_color_hexcode
 
 - name: start enketo pm2 app
   become: true
