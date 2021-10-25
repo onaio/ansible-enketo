@@ -46,7 +46,7 @@
   become: true
   become_user: "{{ enketo_user }}"
   ansible.builtin.replace:
-    path: "{{ enketo_codebase_path }}/app/views/styles/component/_form_header.scss"
+    path: "{{ enketo_checkout_path }}/app/views/styles/component/_form_header.scss"
     regexp: "^\\$offline-color: .*$"
     replace: "$offline-color: {{ enketo_offline_color_hexcode }};"
   when: enketo_offline_color_hexcode is defined and enketo_offline_color_hexcode
@@ -55,7 +55,7 @@
   become: true
   become_user: "{{ enketo_user }}"
   ansible.builtin.replace:
-    path: "{{ enketo_codebase_path }}/app/views/styles/theme-{{ enketo_theme_to_replace }}/_variables.scss"
+    path: "{{ enketo_checkout_path }}/app/views/styles/theme-{{ enketo_theme_to_replace }}/_variables.scss"
     regexp: "^\\$brand-primary-color: .*$"
     replace: "$brand-primary-color: {{ enketo_primary_color_hexcode }};"
   when:
@@ -66,7 +66,7 @@
   become: true
   become_user: "{{ enketo_user }}"
   ansible.builtin.lineinfile:
-    path: "{{ enketo_codebase_path }}/app/views/styles/theme-{{ enketo_theme_to_replace }}/_variables.scss"
+    path: "{{ enketo_checkout_path }}/app/views/styles/theme-{{ enketo_theme_to_replace }}/_variables.scss"
     regexp: "^\\$offline-color: .*$"
     line: "$offline-color: {{ enketo_offline_color_hexcode }};"
   when:
