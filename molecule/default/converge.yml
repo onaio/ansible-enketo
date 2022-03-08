@@ -7,3 +7,7 @@
         name: "ansible-enketo"
       vars:
         - test: true
+        - enketo_install_redis: false
+        - enketo_offline_color_hexcode: "#0b77c2"
+        - enketo_primary_color_hexcode: "#0b77c2"
+        - enketo_darker_color_hexcode: "#0087BE"
