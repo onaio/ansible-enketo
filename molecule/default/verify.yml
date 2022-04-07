@@ -20,3 +20,12 @@
     - name: Check that host file belongs to correct user
       fail:
       when: not config_file.stat.pw_name == "enketo"
+
+    - name: Ensure submissions configuration is set to lowercase
+      lineinfile:
+        name: "/home/enketo/app/config/config.json"
+        line: '        "submissions": true'
+        state: present
+      check_mode: yes
+      register: conf
+      failed_when: (conf is changed) or (conf is failed)
