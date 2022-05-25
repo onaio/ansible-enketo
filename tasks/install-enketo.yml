@@ -74,6 +74,15 @@
   when:
     - enketo_offline_color_hexcode is defined and enketo_offline_color_hexcode
 
+- name: Replace offline enabled image
+  ansible.builtin.copy:
+    src: "{{ enketo_offline_enabled_image }}"
+    dest: "{{ enketo_checkout_path }}/public/images/offline-enabled.png"
+    force: yes
+    owner: "{{ enketo_user }}"
+    group: "{{ enketo_group }}"
+  when: enketo_offline_enabled_image is defined and enketo_offline_enabled_image
+
 - name: Grunt Compile CSS and JS
   become: true
   become_user: "{{ enketo_user }}"
