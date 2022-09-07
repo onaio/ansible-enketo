@@ -6,11 +6,33 @@ driver:
 lint: |
   yamllint .
 platforms:
-  - name: instance
-    image: solita/ubuntu-systemd:18.04
-    dockerfile: Dockerfile.j2
+  - name: onadata-ubuntu-18.04
+    image: geerlingguy/docker-ubuntu1804-ansible:latest
     privileged: true
     command: /sbin/init
+    volumes:
+      - /sys/fs/cgroup:/sys/fs/cgroup:ro
+    env:
+      LC_ALL: "C.UTF-8"
+      LANG: "C.UTF-8"
+  - name: onadata-ubuntu-20.04
+    image: geerlingguy/docker-ubuntu2004-ansible:latest
+    privileged: true
+    command: /sbin/init
+    volumes:
+      - /sys/fs/cgroup:/sys/fs/cgroup:ro
+    env:
+      LC_ALL: "C.UTF-8"
+      LANG: "C.UTF-8"
+  - name: onadata-ubuntu-22.04
+    image: geerlingguy/docker-ubuntu2204-ansible:latest
+    privileged: true
+    command: /sbin/init
+    volumes:
+      - /sys/fs/cgroup:/sys/fs/cgroup:ro
+    env:
+      LC_ALL: "C.UTF-8"
+      LANG: "C.UTF-8"
 scenario:
   name: default
   test_sequence:
