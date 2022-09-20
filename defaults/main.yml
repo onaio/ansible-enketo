@@ -54,6 +54,9 @@ enketo_widgets:
 - date-native-ios
 - date-mobile
 - text-max
+- text-print
+- rating
+- thousands-sep
 enketo_linked_server_name: "Ona"
 enketo_linked_server_url: ""
 enketo_timeout: 300000
