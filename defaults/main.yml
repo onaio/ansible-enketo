@@ -57,6 +57,8 @@ enketo_widgets:
 - text-print
 - rating
 - thousands-sep
+- integer
+- decimal
 enketo_linked_server_name: "Ona"
 enketo_linked_server_url: ""
 enketo_timeout: 300000
