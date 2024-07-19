@@ -1,8 +1,13 @@
 ---
-- name: reload pm2-{{ enketo_user }}
+- name: reload systemctl
+  command: systemctl daemon-reload
+  tags:
+    - skip_ansible_lint
+
+- name: reload enketo
   service:
-    name: "pm2-{{ enketo_user }}"
-    state: reloaded
+    name: "{{ enketo_system_user }}"
+    state: restarted
 
 - name: reload nginx
   debug:

@@ -1,0 +1,18 @@
+---
+- name: Copy the exec-user.sh file
+  template:
+    src: templates/etc/systemd/system/exec_start.sh.j2
+    dest: "{{ enketo_home }}/exec-app.sh"
+    mode: 0755
+
+- name: Copy enketo upstart script
+  template:
+    src: templates/etc/systemd/system/enketo_system_user.service.j2
+    dest: "/etc/systemd/system/{{ enketo_system_user }}.service"
+    mode: 0644
+
+- name: enketo | Register enketo as a service
+  systemd:
+    name: enketo
+    enabled: yes
+

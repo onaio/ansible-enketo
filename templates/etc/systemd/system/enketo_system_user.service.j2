@@ -1,0 +1,16 @@
+[Unit]
+Description=Enketo web app
+After=network.target
+
+[Service]
+Type=simple
+RuntimeDirectory={{ enketo_system_user }}
+WorkingDirectory={{ enketo_home }}/app
+User={{ enketo_system_user }}
+Group=www-data
+Environment=PATH=/home/enketo/.nvm/versions/node/{{ enketo_node_version }}/bin:$PATH
+ExecStart={{ enketo_home }}/exec-app.sh
+PIDFile={{ enketo_pid_file }}
+
+[Install]
+WantedBy=multi-user.target
