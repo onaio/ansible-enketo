@@ -18,3 +18,17 @@
     - { "package":"yarn", "version":"{{ enketo_yarn_version }}" }
   environment:
     PATH: "{{ enketo_node_dir }}/bin:{{ ansible_env.PATH }}"
+
+- name: Install node-gyp
+  become: true
+  become_user: "{{ enketo_user }}"
+  shell: npm install -g node-gyp
+  environment:
+    PATH: "{{ enketo_node_dir }}/bin:{{ ansible_env.PATH }}"
+
+- name: Install libxmljs
+  become: true
+  become_user: "{{ enketo_user }}"
+  shell: npm install -g libxmljs
+  environment:
+    PATH: "{{ enketo_node_dir }}/bin:{{ ansible_env.PATH }}"
