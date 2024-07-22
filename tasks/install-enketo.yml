@@ -68,13 +68,14 @@
   become: true
   become_user: "{{ enketo_user }}"
   shell: "env PATH=/home/enketo/.nvm/versions/node/{{ enketo_node_version }}/bin:$PATH yarn workspace enketo-express install"
+  ignore_errors: yes
   args:
     chdir: "{{ enketo_checkout_path }}"
 
-- name: Install npm Dependencies in package.json
+- name: Build enketo packages
   become: true
   become_user: "{{ enketo_user }}"
-  shell: "env PATH=/home/enketo/.nvm/versions/node/{{ enketo_node_version }}/bin:$PATH yarn build"
+  shell: "env PATH=/home/enketo/.nvm/versions/node/{{ enketo_node_version }}/bin:$PATH yarn workspaces run build"
   args:
     chdir: "{{ enketo_checkout_path }}"
 
