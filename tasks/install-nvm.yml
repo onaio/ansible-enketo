@@ -15,8 +15,20 @@
   shell: "{{ enketo_npm_path }} install -g {{ item.package }}@{{ item.version }}"
   with_items:
     - { "package":"grunt-cli", "version":"{{ enketo_grunt_cli_version }}" }
-    - { "package":"bower", "version":"{{ enketo_bower_version }}" }
-    - { "package":"mocha", "version":"{{ enketo_mocha_version }}" }
-    - { "package":"pm2", "version":"{{ enketo_pm2_version }}" }
+    - { "package":"yarn", "version":"{{ enketo_yarn_version }}" }
+  environment:
+    PATH: "{{ enketo_node_dir }}/bin:{{ ansible_env.PATH }}"
+
+- name: Install node-gyp
+  become: true
+  become_user: "{{ enketo_user }}"
+  shell: npm install -g node-gyp
+  environment:
+    PATH: "{{ enketo_node_dir }}/bin:{{ ansible_env.PATH }}"
+
+- name: Install libxmljs
+  become: true
+  become_user: "{{ enketo_user }}"
+  shell: npm install -g libxmljs
   environment:
     PATH: "{{ enketo_node_dir }}/bin:{{ ansible_env.PATH }}"

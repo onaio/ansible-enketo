@@ -1,5 +1,7 @@
 ---
 galaxy_info:
+  role_name: enketo
+  namespace: onaio
   author: Ona Engineering
   description: This role is used to install and configure Enketo
   min_ansible_version: 2.4
