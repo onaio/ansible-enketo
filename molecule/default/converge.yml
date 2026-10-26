@@ -4,7 +4,7 @@
   tasks:
     - name: "Include enketo"
       include_role:
-        name: "ansible-enketo"
+        name: "{{ lookup('env', 'MOLECULE_PROJECT_DIRECTORY') }}"
       vars:
         test: true
         enketo_enable_submission_logging: True
