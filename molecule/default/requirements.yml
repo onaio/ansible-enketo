@@ -6,7 +6,7 @@
 
 - name: onaio.redis
   src: https://github.com/onaio/ansible-redis.git
-  version: 8dfde8fbda8d72b0899f4d38e60f80dd7360ac2b
+  version: cadd964b8434d575cb307ba1785a59ae2404eb94
   scm: git
 
 - src: https://github.com/onaio/ansible-nvm.git
