@@ -32,7 +32,7 @@
     path: "{{ enketo_checkout_path }}/packages/enketo-express/app/views/styles/component/_form_header.scss"
     regexp: "^\\$offline-color: .*$"
     replace: "$offline-color: {{ enketo_offline_color_hexcode }};"
-  when: enketo_offline_color_hexcode is defined and enketo_offline_color_hexcode
+  when: enketo_offline_color_hexcode | default("") | length > 0
 
 - name: Replace Enketo brand color for theme
   become: true
@@ -45,7 +45,7 @@
     - "kobo"
     - "formhub"
   when:
-    - enketo_primary_color_hexcode is defined and enketo_primary_color_hexcode
+    - enketo_primary_color_hexcode | default("") | length > 0
 
 - name: Ensure offline color is set for theme
   become: true
@@ -55,7 +55,7 @@
     regexp: "^\\$offline-color: .*$"
     line: "$offline-color: {{ enketo_offline_color_hexcode }};"
   when:
-    - enketo_offline_color_hexcode is defined and enketo_offline_color_hexcode
+    - enketo_offline_color_hexcode | default("") | length > 0
 
 - name: Make the new codebase current
   file:
