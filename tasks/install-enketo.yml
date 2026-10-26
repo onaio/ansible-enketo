@@ -85,6 +85,7 @@
   command: "{{ enketo_pm2_path }} delete {{ enketo_user }}"
   # this command fails if the process has not yet been started
   ignore_errors: yes
+  when: enketo_pm2_path is defined
   environment:
     PATH: "{{ enketo_node_dir }}/bin:{{ ansible_env.PATH }}"
     HOME: "{{ enketo_home }}"
