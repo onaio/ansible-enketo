@@ -21,5 +21,5 @@
 
 - src: https://github.com/onaio/ansible-backup.git
   name: onaio.backup
-  version: ea06304f56d2c864336b0c39391c720940065169
+  version: be5379bc9fdb03360d3fdbc2ab90dc1e5708ba26
   scm: git
