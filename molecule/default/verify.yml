@@ -6,7 +6,7 @@
   tasks:
     - name: Populate config file.
       stat:
-        path: "/home/enketo/app/config/config.json"
+        path: "/home/enketo/app/packages/enketo-express/config/config.json"
       register: config_file
 
     - name: Fail if config file does not exist
@@ -23,7 +23,7 @@
 
     - name: Ensure submissions configuration is set to lowercase
       lineinfile:
-        name: "/home/enketo/app/config/config.json"
+        name: "/home/enketo/app/packages/enketo-express/config/config.json"
         line: '        "submissions": true'
         state: present
       check_mode: yes
