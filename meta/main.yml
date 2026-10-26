@@ -8,9 +8,9 @@ galaxy_info:
   license: Apache 2
   platforms:
     - name: Ubuntu
-      verions:
-      - xenial
-      - trusty
+      versions:
+        - 22.04
+        - 24.04
   categories:
     - enketo
 
