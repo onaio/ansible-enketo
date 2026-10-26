@@ -9,7 +9,6 @@
     shell: /bin/bash
     group: "{{ enketo_group }}"
     force: yes
-    append: yes
     createhome: yes
     home: "{{ enketo_home }}"
 
