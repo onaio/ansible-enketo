@@ -1,31 +1,30 @@
 ---
 # This is an example playbook to execute Ansible tests.
-
 - name: Verify
   hosts: all
   tasks:
     - name: Populate config file.
-      stat:
+      ansible.builtin.stat:
         path: "/home/enketo/app/packages/enketo-express/config/config.json"
       register: config_file
 
     - name: Fail if config file does not exist
-      fail:
+      ansible.builtin.fail:
       when: not config_file.stat.exists
 
     - name: Check that host file belongs to correct group
-      fail:
+      ansible.builtin.fail:
       when: not config_file.stat.gr_name == "www-data"
 
     - name: Check that host file belongs to correct user
-      fail:
+      ansible.builtin.fail:
       when: not config_file.stat.pw_name == "enketo"
 
     - name: Ensure submissions configuration is set to lowercase
-      lineinfile:
+      ansible.builtin.lineinfile:
         name: "/home/enketo/app/packages/enketo-express/config/config.json"
         line: '        "submissions": true'
         state: present
-      check_mode: yes
+      check_mode: true
       register: conf
       failed_when: (conf is changed) or (conf is failed)

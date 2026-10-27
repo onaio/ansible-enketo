@@ -1,6 +1,6 @@
 ---
 - name: Install Node Version Manager
-  include_role:
+  ansible.builtin.include_role:
     name: onaio.nvm
   vars:
     nvm_user: "{{ enketo_user }}"
@@ -12,23 +12,26 @@
     nvm_version: "{{ enketo_nvm_version }}"
 
 - name: Install npm global packages
-  shell: "{{ enketo_npm_path }} install -g {{ item.package }}@{{ item.version }}"
+  ansible.builtin.command: "{{ enketo_npm_path }} install -g {{ item.package }}@{{ item.version }}"
+  changed_when: true
   with_items:
-    - { "package":"grunt-cli", "version":"{{ enketo_grunt_cli_version }}" }
-    - { "package":"yarn", "version":"{{ enketo_yarn_version }}" }
+    - { "package": "grunt-cli", "version": "{{ enketo_grunt_cli_version }}" }
+    - { "package": "yarn", "version": "{{ enketo_yarn_version }}" }
   environment:
     PATH: "{{ enketo_node_dir }}/bin:{{ ansible_env.PATH }}"
 
 - name: Install node-gyp
   become: true
   become_user: "{{ enketo_user }}"
-  shell: npm install -g node-gyp
+  ansible.builtin.command: npm install -g node-gyp
+  changed_when: true
   environment:
     PATH: "{{ enketo_node_dir }}/bin:{{ ansible_env.PATH }}"
 
 - name: Install libxmljs
   become: true
   become_user: "{{ enketo_user }}"
-  shell: npm install -g libxmljs
+  ansible.builtin.command: npm install -g libxmljs
+  changed_when: true
   environment:
     PATH: "{{ enketo_node_dir }}/bin:{{ ansible_env.PATH }}"

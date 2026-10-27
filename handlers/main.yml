@@ -1,15 +1,15 @@
 ---
-- name: reload systemctl
+- name: Reload systemctl
   command: systemctl daemon-reload
   tags:
     - skip_ansible_lint
 
-- name: reload enketo
-  service:
+- name: Reload enketo
+  ansible.builtin.service:
     name: "{{ enketo_system_user }}"
     state: restarted
 
-- name: reload nginx
-  debug:
+- name: Reload nginx
+  ansible.builtin.debug:
     msg: "dummy reload nginx task"
   when: test

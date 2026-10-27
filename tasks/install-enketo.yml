@@ -1,24 +1,24 @@
 ---
 - name: Make Checkout Path for Enketo Repo
-  file:
+  ansible.builtin.file:
     state: directory
     path: "{{ enketo_checkout_path }}"
     owner: "{{ enketo_user }}"
     group: "{{ enketo_group }}"
-    recurse: yes
+    recurse: true
 
 - name: Clone Enketo GIT Repository
   become: true
   become_user: "{{ enketo_user }}"
-  git:
+  ansible.builtin.git:
     repo: "{{ enketo_git_url }}"
     dest: "{{ enketo_checkout_path }}"
     version: "{{ enketo_git_branch }}"
-    recursive: yes
-    update: yes
+    recursive: true
+    update: true
 
 - name: Copy enketo config to config directory
-  template:
+  ansible.builtin.template:
     src: templates/enketo/config.json.j2
     dest: "{{ enketo_checkout_path }}/packages/enketo-express/config/config.json"
     owner: "{{ enketo_user }}"
@@ -58,33 +58,36 @@
     - enketo_offline_color_hexcode | default("") | length > 0
 
 - name: Make the new codebase current
-  file:
-    force: yes
+  ansible.builtin.file:
+    force: true
     state: link
     dest: "{{ enketo_codebase_path }}"
     src: "{{ enketo_checkout_path }}"
 
-- name: Install npm Dependencies in package.json
+- name: Install npm Dependencies in package.json  # noqa: ignore-errors
   become: true
   become_user: "{{ enketo_user }}"
-  shell: "env PATH=/home/enketo/.nvm/versions/node/{{ enketo_node_version }}/bin:$PATH yarn workspace enketo-express install"
-  ignore_errors: yes
+  ansible.builtin.shell: "env PATH=/home/enketo/.nvm/versions/node/{{ enketo_node_version }}/bin:$PATH yarn workspace enketo-express install"
+  changed_when: true
+  ignore_errors: true
   args:
     chdir: "{{ enketo_checkout_path }}"
 
 - name: Build enketo packages
   become: true
   become_user: "{{ enketo_user }}"
-  shell: "env PATH=/home/enketo/.nvm/versions/node/{{ enketo_node_version }}/bin:$PATH yarn workspaces run build"
+  ansible.builtin.shell: "env PATH=/home/enketo/.nvm/versions/node/{{ enketo_node_version }}/bin:$PATH yarn workspaces run build"
+  changed_when: true
   args:
     chdir: "{{ enketo_checkout_path }}"
 
-- name: delete specific enketo pm2 process
+- name: Delete specific enketo pm2 process
   become: true
   become_user: "{{ enketo_user }}"
-  command: "{{ enketo_pm2_path }} delete {{ enketo_user }}"
+  ansible.builtin.command: "{{ enketo_pm2_path }} delete {{ enketo_user }}"
+  changed_when: true
   # this command fails if the process has not yet been started
-  ignore_errors: yes
+  failed_when: false
   when: enketo_pm2_path is defined
   environment:
     PATH: "{{ enketo_node_dir }}/bin:{{ ansible_env.PATH }}"
@@ -93,9 +96,8 @@
     - run-app
 
 - name: Setup SystemD unit
-  include_tasks: setup-systemd-unit.yml
+  ansible.builtin.include_tasks: setup-systemd-unit.yml
 
 # TODO: Add in the docs that we only support ubuntu > 14
 - name: Run handler services
-  include_tasks: handlers/main.yml
-
+  ansible.builtin.include_tasks: handlers/main.yml
