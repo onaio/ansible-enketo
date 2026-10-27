@@ -1,8 +1,7 @@
 ---
 - name: Reload systemctl
-  command: systemctl daemon-reload
-  tags:
-    - skip_ansible_lint
+  ansible.builtin.systemd:
+    daemon_reload: true
 
 - name: Reload enketo
   ansible.builtin.service:
