@@ -1,22 +1,24 @@
 ---
 galaxy_info:
+  role_name: enketo
+  namespace: onaio
   author: Ona Engineering
   description: This role is used to install and configure Enketo
-  min_ansible_version: 2.4
+  min_ansible_version: "2.4"
   license: Apache 2
   platforms:
     - name: Ubuntu
-      verions:
-      - xenial
-      - trusty
-  categories:
+      versions:
+        - jammy
+        - noble
+  galaxy_tags:
     - enketo
 
 dependencies:
- - role: onaio.redis
-   become: true
-   become_user: "root"
-   redis_bind: "{{ enketo_redis_bind_address }}"
-   when: enketo_install_redis
-   tags:
-    - redis
+  - role: onaio.redis
+    become: true
+    become_user: "root"
+    redis_bind: "{{ enketo_redis_bind_address }}"
+    when: enketo_install_redis
+    tags:
+      - redis

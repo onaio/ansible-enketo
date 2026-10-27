@@ -3,12 +3,12 @@
   hosts: all
   tasks:
     - name: "Include enketo"
-      include_role:
-        name: "ansible-enketo"
+      ansible.builtin.include_role:
+        name: "{{ lookup('env', 'MOLECULE_PROJECT_DIRECTORY') }}"
       vars:
-        - test: true
-        - enketo_enable_submission_logging: True
-        - enketo_install_redis: false
-        - enketo_offline_color_hexcode: "#0b77c2"
-        - enketo_primary_color_hexcode: "#0b77c2"
-        - enketo_darker_color_hexcode: "#0087BE"
+        test: true
+        enketo_enable_submission_logging: true
+        enketo_install_redis: false
+        enketo_offline_color_hexcode: "#0b77c2"
+        enketo_primary_color_hexcode: "#0b77c2"
+        enketo_darker_color_hexcode: "#0087BE"

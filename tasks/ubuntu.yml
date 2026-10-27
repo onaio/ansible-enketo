@@ -1,9 +1,9 @@
 ---
-- name: Install Enketo Dependencies
-  apt:
+- name: Install Enketo Dependencies  # noqa: package-latest
+  ansible.builtin.apt:
     pkg: "{{ item }}"
     state: latest
-    update_cache: yes
+    update_cache: true
     cache_valid_time: 600
   with_items:
     - build-essential

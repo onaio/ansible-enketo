@@ -1,10 +1,14 @@
 ---
-- name: reload pm2-{{ enketo_user }}
-  service:
-    name: "pm2-{{ enketo_user }}"
-    state: reloaded
+- name: Reload systemctl
+  ansible.builtin.systemd:
+    daemon_reload: true
 
-- name: reload nginx
-  debug:
+- name: Reload enketo
+  ansible.builtin.service:
+    name: "{{ enketo_system_user }}"
+    state: restarted
+
+- name: Reload nginx
+  ansible.builtin.debug:
     msg: "dummy reload nginx task"
   when: test

@@ -1,32 +1,31 @@
 ---
 - name: Install Ubuntu related packages
-  include_tasks: ubuntu.yml
+  ansible.builtin.include_tasks: ubuntu.yml
   when: ansible_distribution == 'Ubuntu'
 
 - name: Add Enketo System User
-  user:
+  ansible.builtin.user:
     name: "{{ enketo_user }}"
     shell: /bin/bash
     group: "{{ enketo_group }}"
-    force: yes
-    append: yes
-    createhome: yes
+    force: true
+    createhome: true
     home: "{{ enketo_home }}"
 
 - name: Install curl package
-  apt:
+  ansible.builtin.apt:
     name: curl
 
 - name: Install NVM and Global Node Packages
-  include_tasks: install-nvm.yml
+  ansible.builtin.include_tasks: install-nvm.yml
   tags:
-   - nvm
+    - nvm
 
 - name: Configure Redis for Enketo
-  include_tasks: configure-redis.yml
+  ansible.builtin.include_tasks: configure-redis.yml
   tags:
-   - redis
+    - redis
   when: enketo_install_redis
 
 - name: Install and configure Enketo
-  include_tasks: install-enketo.yml
+  ansible.builtin.include_tasks: install-enketo.yml

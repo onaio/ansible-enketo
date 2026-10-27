@@ -1,228 +1,103 @@
 ---
 - name: Make Checkout Path for Enketo Repo
-  file:
+  ansible.builtin.file:
     state: directory
     path: "{{ enketo_checkout_path }}"
     owner: "{{ enketo_user }}"
     group: "{{ enketo_group }}"
-    recurse: yes
+    recurse: true
 
 - name: Clone Enketo GIT Repository
   become: true
   become_user: "{{ enketo_user }}"
-  git:
+  ansible.builtin.git:
     repo: "{{ enketo_git_url }}"
     dest: "{{ enketo_checkout_path }}"
     version: "{{ enketo_git_branch }}"
-    recursive: yes
-    update: yes
-
-- name: Install npm Dependencies in package.json
-  become: true
-  become_user: "{{ enketo_user }}"
-  npm:
-    executable: "{{ enketo_npm_path }}"
-    path: "{{ enketo_checkout_path }}"
-  ignore_errors: yes
-  environment:
-    PATH: "{{ enketo_node_dir }}/bin:{{ ansible_env.PATH }}"
+    recursive: true
+    update: true
 
 - name: Copy enketo config to config directory
-  template:
+  ansible.builtin.template:
     src: templates/enketo/config.json.j2
-    dest: "{{ enketo_checkout_path }}/config/config.json"
+    dest: "{{ enketo_checkout_path }}/packages/enketo-express/config/config.json"
     owner: "{{ enketo_user }}"
     group: "{{ enketo_group }}"
     mode: "0644"
-
-- name: Patch express.js file for additional settings
-  patch:
-    src: templates/enketo/express.js.diff
-    basedir: "{{ enketo_checkout_path }}"
-    strip: 1
-  when: enketo_git_branch < "1.74.0"
 
 - name: Replace Enketo offline color for form header
   become: true
   become_user: "{{ enketo_user }}"
   ansible.builtin.replace:
-    path: "{{ enketo_checkout_path }}/app/views/styles/component/_form_header.scss"
+    path: "{{ enketo_checkout_path }}/packages/enketo-express/app/views/styles/component/_form_header.scss"
     regexp: "^\\$offline-color: .*$"
     replace: "$offline-color: {{ enketo_offline_color_hexcode }};"
-  when: enketo_offline_color_hexcode is defined and enketo_offline_color_hexcode
+  when: enketo_offline_color_hexcode | default("") | length > 0
 
 - name: Replace Enketo brand color for theme
   become: true
   become_user: "{{ enketo_user }}"
   ansible.builtin.replace:
-    path: "{{ enketo_checkout_path }}/app/views/styles/theme-{{ item }}/_variables.scss"
+    path: "{{ enketo_checkout_path }}/packages/enketo-express/app/views/styles/theme-{{ item }}/_variables.scss"
     regexp: "^\\$brand-primary-color: .*$"
     replace: "$brand-primary-color: {{ enketo_primary_color_hexcode }};"
   with_items:
     - "kobo"
     - "formhub"
   when:
-    - enketo_primary_color_hexcode is defined and enketo_primary_color_hexcode
+    - enketo_primary_color_hexcode | default("") | length > 0
 
 - name: Ensure offline color is set for theme
   become: true
   become_user: "{{ enketo_user }}"
   ansible.builtin.lineinfile:
-    path: "{{ enketo_checkout_path }}/app/views/styles/component/_form_header.scss"
+    path: "{{ enketo_checkout_path }}/packages/enketo-express/app/views/styles/component/_form_header.scss"
     regexp: "^\\$offline-color: .*$"
     line: "$offline-color: {{ enketo_offline_color_hexcode }};"
   when:
-    - enketo_offline_color_hexcode is defined and enketo_offline_color_hexcode
-
-- name: Grunt Compile CSS and JS
-  become: true
-  become_user: "{{ enketo_user }}"
-  shell: "{{ enketo_grunt_path }}"
-  args:
-    chdir: "{{ enketo_checkout_path }}"
-  environment:
-    PATH: "{{ enketo_node_dir }}/bin:{{ ansible_env.PATH }}"
-    HOME: "{{ enketo_home }}"
-
-# Re-run grunt to make sure the Enketo Grid Theme work as expected
-- name: Re run Grunt Compile CSS and JS
-  become: true
-  become_user: "{{ enketo_user }}"
-  shell: "{{ enketo_grunt_path }}"
-  args:
-    chdir: "{{ enketo_checkout_path }}"
-  environment:
-    PATH: "{{ enketo_node_dir }}/bin:{{ ansible_env.PATH }}"
-    HOME: "{{ enketo_home }}"
-
-- name: Replace '#ce4f07' with  enketo_offline_color_hexcode in compiled css
-  replace:
-    path: "{{ enketo_checkout_path }}/public/css/{{ item }}.css"
-    # public/css/theme-formhub.css
-    regexp: "#ce4f07"
-    replace: "{{ enketo_offline_color_hexcode }}"
-  with_items:
-    - "theme-formhub"
-    - "theme-grid"
-    - "theme-plain"
-    - "theme-kobo"
-  when:
-    - enketo_offline_color_hexcode is defined and enketo_offline_color_hexcode
-
-- name: Replace '#a53f06' with  enketo_darker_color_hexcode in compiled css
-  replace:
-    path: "{{ enketo_checkout_path }}/public/css/{{ item }}.css"
-    regexp: "#a53f06"
-    replace: "{{ enketo_darker_color_hexcode }}"
-  with_items:
-    - "theme-formhub"
-    - "theme-grid"
-    - "theme-plain"
-    - "theme-kobo"
-  when:
-    - enketo_darker_color_hexcode is defined and enketo_darker_color_hexcode
+    - enketo_offline_color_hexcode | default("") | length > 0
 
 - name: Make the new codebase current
-  file:
-    force: yes
+  ansible.builtin.file:
+    force: true
     state: link
     dest: "{{ enketo_codebase_path }}"
     src: "{{ enketo_checkout_path }}"
-  notify:
-    - reload nginx
-    - "reload pm2-{{ enketo_user }}"
 
-- name: delete specific enketo pm2 process
+- name: Install npm Dependencies in package.json  # noqa: ignore-errors
   become: true
   become_user: "{{ enketo_user }}"
-  command: "{{ enketo_pm2_path }} delete {{ enketo_user }}"
-  # this command fails if the process has not yet been started
-  ignore_errors: yes
-  environment:
-    PATH: "{{ enketo_node_dir }}/bin:{{ ansible_env.PATH }}"
-    HOME: "{{ enketo_home }}"
-  tags:
-    - run-app
-  notify:
-    - reload nginx
-    - "reload pm2-{{ enketo_user }}"
-
-- name: start enketo pm2 app
-  become: true
-  become_user: "{{ enketo_user }}"
-  command: "{{ enketo_pm2_path }} start app.js -i 0 -n {{ enketo_user }}"
+  ansible.builtin.shell: "env PATH=/home/enketo/.nvm/versions/node/{{ enketo_node_version }}/bin:$PATH yarn workspace enketo-express install"
+  changed_when: true
+  ignore_errors: true
   args:
-    chdir: "{{ enketo_codebase_path }}"
-  environment:
-    PATH: "{{ enketo_node_dir }}/bin:{{ ansible_env.PATH }}"
-    HOME: "{{ enketo_home }}"
-  tags:
-    - run-app
-  notify:
-    - reload nginx
-    - "reload pm2-{{ enketo_user }}"
+    chdir: "{{ enketo_checkout_path }}"
 
-- name: save the current PM2 running list
+- name: Build enketo packages
   become: true
   become_user: "{{ enketo_user }}"
-  command: "{{ enketo_pm2_path }} save"
+  ansible.builtin.shell: "env PATH=/home/enketo/.nvm/versions/node/{{ enketo_node_version }}/bin:$PATH yarn workspaces run build"
+  changed_when: true
+  args:
+    chdir: "{{ enketo_checkout_path }}"
+
+- name: Delete specific enketo pm2 process
+  become: true
+  become_user: "{{ enketo_user }}"
+  ansible.builtin.command: "{{ enketo_pm2_path }} delete {{ enketo_user }}"
+  changed_when: true
+  # this command fails if the process has not yet been started
+  failed_when: false
+  when: enketo_pm2_path is defined
   environment:
     PATH: "{{ enketo_node_dir }}/bin:{{ ansible_env.PATH }}"
     HOME: "{{ enketo_home }}"
   tags:
     - run-app
-  notify:
-    - "reload pm2-{{ enketo_user }}"
 
-- name: delete the old startup file
-  become: true
-  become_user: "root"
-  command: "{{ enketo_pm2_path }} unstartup {{ enketo_init_system }} -u {{ enketo_user }}"
-  environment:
-    PATH: "{{ enketo_node_dir }}/bin:{{ ansible_env.PATH }}"
-  ignore_errors: yes
-  tags:
-    - run-app
-  notify:
-    - "reload pm2-{{ enketo_user }}"
+- name: Setup SystemD unit
+  ansible.builtin.include_tasks: setup-systemd-unit.yml
 
-- name: Cleanup pm2 processes
-  become: true
-  become_user: "root"
-  shell: "killall -u {{ enketo_user }}"
-
-- name: generate an Enketo PM2 init service file
-  become: true
-  become_user: "root"
-  command: "{{ enketo_pm2_path }} startup {{ enketo_init_system }} -u {{ enketo_user }} --hp {{ enketo_home }}"
-  environment:
-    PATH: "{{ enketo_node_dir }}/bin:{{ ansible_env.PATH }}"
-  tags:
-    - run-app
-  notify:
-    - "reload pm2-{{ enketo_user }}"
-
-- block:
-    - name: Replace pm2 resurrect with pm2 start
-      lineinfile:
-        regexp: "^ExecStart"
-        line: "ExecStart={{ enketo_pm2_path }} start app.js -n {{ enketo_user }} -i 0"
-        dest: "/etc/systemd/system/pm2-{{ enketo_user }}.service"
-
-    - name: Add WorkingDirectory in pm2-enketo.service file
-      lineinfile:
-        path: /etc/systemd/system/pm2-{{ enketo_user }}.service
-        insertbefore: "^ExecStart"
-        line: "WorkingDirectory={{ enketo_codebase_path }}"
-  when: enketo_init_system == "systemd"
-
-- name: reload systemd daemons
-  become: true
-  become_user: "root"
-  systemd:
-    daemon_reload: yes
-  when: enketo_init_system == "systemd"
-  tags:
-    - run-app
-  notify:
-    - "reload pm2-{{ enketo_user }}"
+# TODO: Add in the docs that we only support ubuntu > 14
+- name: Run handler services
+  ansible.builtin.include_tasks: handlers/main.yml
